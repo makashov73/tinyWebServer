@@ -24,7 +24,7 @@ func getIcon(ext string) string {
 
 func listFiles(w http.ResponseWriter, r *http.Request) {
 	basePath, _ := os.Getwd() // Get the current working directory
-	files, err := filepath.Glob(filepath.Join(basePath, "testFolder", "*"))
+	files, err := filepath.Glob(filepath.Join(basePath, "files", "*"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
