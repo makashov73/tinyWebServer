@@ -91,7 +91,7 @@ func listFiles(dirPath string, w http.ResponseWriter, r *http.Request, indent st
 			extension := filepath.Ext(file.Name())
 
 			fmt.Fprintf(w, "<tr>")
-			fmt.Fprintf(w, "<td>%s<a href=\"%s\" style=\"text-decoration: none; color:#F7F7F7; font-size: 30px; font-family: Arial;\">📀️ %s</a></td>", indent, relativePath, file.Name())
+			fmt.Fprintf(w, "<td>%s<a href=\"%s\" style=\"text-decoration: none; color:#F7F7F7; font-size: 30px; font-family: Arial;\">📀️ %s</a></td>", indent, relativePath, strings.TrimSuffix(file.Name(), extension))
 			fmt.Fprintf(w, "<td align=\"center\" style=\"text-decoration: none; color:#F7F7F7; font-size: 22px; font-family: Arial;\">%s</a></td>", extension)
 			fmt.Fprintf(w, "<td align=\"center\" style=\"text-decoration: none; color:#F7F7F7; font-size: 22px; font-family: Arial;\">%s</td>", duration)
 			fmt.Fprintf(w, "<td align=\"center\" style=\"text-decoration: none; color:#F7F7F7; font-size: 22px; font-family: Arial;\">%s</td>", size)
