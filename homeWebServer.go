@@ -105,6 +105,14 @@ func main() {
 	fileServer := http.FileServer(http.Dir(filepath.Join(basePath, "files")))
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == "/" {
+			username, password, authOK := r.BasicAuth()
+			if !authOK || username != "admin" || password != "4815162342" {
+				w.Header().Set("WWW-Authenticate", `Basic realm="Restricted"`)
+				w.WriteHeader(http.StatusUnauthorized)
+				fmt.Fprintf(w, "Unauthorized access\n")
+				return
+			}
+
 			fmt.Fprintf(w, "<html><head><title>Home Media Server</title></head><body bgcolor=\"#494949\">")
 			fmt.Fprintf(w, "<h1 align=\"center\" style=\"color:#ABABAB;\">Home Media Server</h1>")
 			fmt.Fprintf(w, "<table width=\"100%\"><tr><th style=\"text-decoration: none; color:#9A9A9A; font-size: 18px; font-family: Arial;\">Name</th><th style=\"text-decoration: none; color:#9A9A9A; font-size:18px; font-family: Arial;\">Extension</th><th style=\"text-decoration: none; color:#9A9A9A; font-size: 18px; font-family: Arial;\">Duration</th><th style=\"text-decoration: none; color:#9A9A9A; font-size: 18px; font-family: Arial;\">Size</th></tr>")
