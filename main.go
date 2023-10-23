@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/h2non/filetype"
-	"io/ioutil"
+	"io/fs"
 	"log"
 	"net/http"
 	"os"
@@ -37,7 +37,8 @@ func formatSize(size int64) string {
 }
 
 func listFiles(dirPath string, w http.ResponseWriter, r *http.Request, indent string) {
-	files, err := ioutil.ReadDir(dirPath)
+	fays := os.DirFS(dirPath)
+	files, err := fs.ReadDir(fays, ".")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -52,7 +53,7 @@ func listFiles(dirPath string, w http.ResponseWriter, r *http.Request, indent st
 			fmt.Fprintf(w, "</tr>")
 			listFiles(relPath, w, r, indent+"  ")
 		} else if filepath.Base(relPath) != ".DS_Store" {
-			buf, err := ioutil.ReadFile(relPath)
+			buf, err := os.ReadFile(relPath)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
@@ -115,7 +116,7 @@ func main() {
 
 			fmt.Fprintf(w, "<html><head><title>Home Media Server</title></head><body bgcolor=\"#494949\">")
 			fmt.Fprintf(w, "<h1 align=\"center\" style=\"color:#ABABAB;\">Home Media Server</h1>")
-			fmt.Fprintf(w, "<table width=\"100%\"><tr><th style=\"text-decoration: none; color:#9A9A9A; font-size: 18px; font-family: Arial;\">Name</th><th style=\"text-decoration: none; color:#9A9A9A; font-size:18px; font-family: Arial;\">Extension</th><th style=\"text-decoration: none; color:#9A9A9A; font-size: 18px; font-family: Arial;\">Duration</th><th style=\"text-decoration: none; color:#9A9A9A; font-size: 18px; font-family: Arial;\">Size</th></tr>")
+			fmt.Fprintf(w, "<table width=\"100%%\"><tr><th style=\"text-decoration: none; color:#9A9A9A; font-size: 18px; font-family: Arial;\">Name</th><th style=\"text-decoration: none; color:#9A9A9A; font-size:18px; font-family: Arial;\">Extension</th><th style=\"text-decoration: none; color:#9A9A9A; font-size: 18px; font-family: Arial;\">Duration</th><th style=\"text-decoration: none; color:#9A9A9A; font-size: 18px; font-family: Arial;\">Size</th></tr>")
 			listFiles(filepath.Join(basePath, "files"), w, r, "")
 			fmt.Fprintf(w, "</table></body></html>")
 		} else {
