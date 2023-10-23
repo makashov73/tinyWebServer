@@ -102,12 +102,17 @@ func listFiles(dirPath string, w http.ResponseWriter, r *http.Request, indent st
 
 func main() {
 	basePath, _ := os.Getwd()
+	fileServer := http.FileServer(http.Dir(filepath.Join(basePath, "files")))
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "<html><head><title>Home Media Server</title></head><body bgcolor=\"#494949\">")
-		fmt.Fprintf(w, "<h1 align=\"center\" style=\"color:#ABABAB;\">Home Media Server</h1>")
-		fmt.Fprintf(w, "<table width=\"100%\"><tr><th style=\"text-decoration: none; color:#9A9A9A; font-size: 18px; font-family: Arial;\">Name</th><th style=\"text-decoration: none; color:#9A9A9A; font-size:18px; font-family: Arial;\">Extension</th><th style=\"text-decoration: none; color:#9A9A9A; font-size: 18px; font-family: Arial;\">Duration</th><th style=\"text-decoration: none; color:#9A9A9A; font-size: 18px; font-family: Arial;\">Size</th></tr>")
-		listFiles(filepath.Join(basePath, "files"), w, r, "")
-		fmt.Fprintf(w, "</table></body></html>")
+		if r.URL.Path == "/" {
+			fmt.Fprintf(w, "<html><head><title>Home Media Server</title></head><body bgcolor=\"#494949\">")
+			fmt.Fprintf(w, "<h1 align=\"center\" style=\"color:#ABABAB;\">Home Media Server</h1>")
+			fmt.Fprintf(w, "<table width=\"100%\"><tr><th style=\"text-decoration: none; color:#9A9A9A; font-size: 18px; font-family: Arial;\">Name</th><th style=\"text-decoration: none; color:#9A9A9A; font-size:18px; font-family: Arial;\">Extension</th><th style=\"text-decoration: none; color:#9A9A9A; font-size: 18px; font-family: Arial;\">Duration</th><th style=\"text-decoration: none; color:#9A9A9A; font-size: 18px; font-family: Arial;\">Size</th></tr>")
+			listFiles(filepath.Join(basePath, "files"), w, r, "")
+			fmt.Fprintf(w, "</table></body></html>")
+		} else {
+			fileServer.ServeHTTP(w, r)
+		}
 	})
 	log.Println("tiny Web Server Successfully started at port 8081")
 	log.Fatal(http.ListenAndServe("0.0.0.0:8081", nil))
