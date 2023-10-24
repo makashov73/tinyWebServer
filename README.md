@@ -6,3 +6,5 @@ All what you need to use this it's compile this code for one of your OS, place b
 Then after run, you need to open URL in your browser localhost:8081/files (for your local machine), or domain_name:8081/files (for reach access from network).
 
 Enjoy :)
+
+For working this server properly first of all you need to install package [filetype](https://github.com/h2non/filetype)
