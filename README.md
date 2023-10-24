@@ -7,7 +7,7 @@ Then after run, you need to open URL in your browser localhost:8081/files (for y
 
 Enjoy :)
 
-#LINKS
+# LINKS
 
 To download pre-compiled builds for your type OS follow this:
 [MacOS](https://github.com/makashov73/tinyWebServer/blob/master/build/tinyWebServer_macOS)
