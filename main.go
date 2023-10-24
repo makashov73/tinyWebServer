@@ -48,9 +48,18 @@ func listFiles(dirPath string, w http.ResponseWriter, r *http.Request, indent st
 		relPath := filepath.Join(dirPath, file.Name())
 
 		if file.IsDir() {
-			fmt.Fprintf(w, "<tr>")
-			fmt.Fprintf(w, "<td colspan=\"4\" style=\"text-decoration: none; color:#747474; font-size: 24px; font-family: Arial;\">📁 %s%s/</td>", indent, file.Name())
-			fmt.Fprintf(w, "</tr>")
+			_, err := fmt.Fprintf(w, "<tr>")
+			if err != nil {
+				return
+			}
+			_, err = fmt.Fprintf(w, "<td colspan=\"4\" style=\"text-decoration: none; color:#747474; font-size: 24px; font-family: Arial;\">📁 %s%s/</td>", indent, file.Name())
+			if err != nil {
+				return
+			}
+			_, err = fmt.Fprintf(w, "</tr>")
+			if err != nil {
+				return
+			}
 			listFiles(relPath, w, r, indent+"  ")
 		} else if filepath.Base(relPath) != ".DS_Store" {
 			buf, err := os.ReadFile(relPath)
@@ -91,12 +100,30 @@ func listFiles(dirPath string, w http.ResponseWriter, r *http.Request, indent st
 
 			extension := filepath.Ext(file.Name())
 
-			fmt.Fprintf(w, "<tr>")
-			fmt.Fprintf(w, "<td>%s<a href=\"%s\" style=\"text-decoration: none; color:#F7F7F7; font-size: 30px; font-family: Arial;\">📀️ %s</a></td>", indent, relativePath, strings.TrimSuffix(file.Name(), extension))
-			fmt.Fprintf(w, "<td align=\"center\" style=\"text-decoration: none; color:#F7F7F7; font-size: 22px; font-family: Arial;\">%s</a></td>", extension)
-			fmt.Fprintf(w, "<td align=\"center\" style=\"text-decoration: none; color:#F7F7F7; font-size: 22px; font-family: Arial;\">%s</td>", duration)
-			fmt.Fprintf(w, "<td align=\"center\" style=\"text-decoration: none; color:#F7F7F7; font-size: 22px; font-family: Arial;\">%s</td>", size)
-			fmt.Fprintf(w, "</tr>")
+			_, err = fmt.Fprintf(w, "<tr>")
+			if err != nil {
+				return
+			}
+			_, err = fmt.Fprintf(w, "<td>%s<a href=\"%s\" style=\"text-decoration: none; color:#F7F7F7; font-size: 30px; font-family: Arial;\">📀️ %s</a></td>", indent, relativePath, strings.TrimSuffix(file.Name(), extension))
+			if err != nil {
+				return
+			}
+			_, err = fmt.Fprintf(w, "<td align=\"center\" style=\"text-decoration: none; color:#F7F7F7; font-size: 22px; font-family: Arial;\">%s</a></td>", extension)
+			if err != nil {
+				return
+			}
+			_, err = fmt.Fprintf(w, "<td align=\"center\" style=\"text-decoration: none; color:#F7F7F7; font-size: 22px; font-family: Arial;\">%s</td>", duration)
+			if err != nil {
+				return
+			}
+			_, err = fmt.Fprintf(w, "<td align=\"center\" style=\"text-decoration: none; color:#F7F7F7; font-size: 22px; font-family: Arial;\">%s</td>", size)
+			if err != nil {
+				return
+			}
+			_, err = fmt.Fprintf(w, "</tr>")
+			if err != nil {
+				return
+			}
 		}
 	}
 }
@@ -110,15 +137,30 @@ func main() {
 			if !authOK || username != "admin" || password != "4815162342" {
 				w.Header().Set("WWW-Authenticate", `Basic realm="Restricted"`)
 				w.WriteHeader(http.StatusUnauthorized)
-				fmt.Fprintf(w, "Unauthorized access\n")
+				_, err := fmt.Fprintf(w, "Unauthorized access")
+				if err != nil {
+					return
+				}
 				return
 			}
 
-			fmt.Fprintf(w, "<html><head><title>Home Media Server</title></head><body bgcolor=\"#494949\">")
-			fmt.Fprintf(w, "<h1 align=\"center\" style=\"color:#ABABAB;\">Home Media Server</h1>")
-			fmt.Fprintf(w, "<table width=\"100%%\"><tr><th style=\"text-decoration: none; color:#9A9A9A; font-size: 18px; font-family: Arial;\">Name</th><th style=\"text-decoration: none; color:#9A9A9A; font-size:18px; font-family: Arial;\">Extension</th><th style=\"text-decoration: none; color:#9A9A9A; font-size: 18px; font-family: Arial;\">Duration</th><th style=\"text-decoration: none; color:#9A9A9A; font-size: 18px; font-family: Arial;\">Size</th></tr>")
+			_, err := fmt.Fprintf(w, "<html><head><title>Home Media Server</title></head><body style=\"background-color:#494949\">")
+			if err != nil {
+				return
+			}
+			_, err = fmt.Fprintf(w, "<h1 align=\"center\" style=\"color:#ABABAB;\">Home Media Server</h1>")
+			if err != nil {
+				return
+			}
+			_, err = fmt.Fprintf(w, "<table width=\"100%%\"><tr><th style=\"text-decoration: none; color:#9A9A9A; font-size: 18px; font-family: Arial;\">Name</th><th style=\"text-decoration: none; color:#9A9A9A; font-size:18px; font-family: Arial;\">Extension</th><th style=\"text-decoration: none; color:#9A9A9A; font-size: 18px; font-family: Arial;\">Duration</th><th style=\"text-decoration: none; color:#9A9A9A; font-size: 18px; font-family: Arial;\">Size</th></tr>")
+			if err != nil {
+				return
+			}
 			listFiles(filepath.Join(basePath, "files"), w, r, "")
-			fmt.Fprintf(w, "</table></body></html>")
+			_, err = fmt.Fprintf(w, "</table></body></html>")
+			if err != nil {
+				return
+			}
 		} else {
 			fileServer.ServeHTTP(w, r)
 		}
