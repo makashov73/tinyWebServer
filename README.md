@@ -7,4 +7,11 @@ Then after run, you need to open URL in your browser localhost:8081/files (for y
 
 Enjoy :)
 
+#LINKS
+
+To download pre-compiled builds for your type OS follow this:
+[MacOS](https://github.com/makashov73/tinyWebServer/blob/master/build/tinyWebServer_macOS)
+[Windows](https://github.com/makashov73/tinyWebServer/blob/master/build/tinyWebServer_windows.exe)
+[Linux](https://github.com/makashov73/tinyWebServer/blob/master/build/tinyWebServer_linux_linux)
+
 For working this server properly first of all you need to install package [filetype](https://github.com/h2non/filetype)
