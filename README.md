@@ -14,4 +14,4 @@ To download pre-compiled builds for your type OS follow this:
 [Windows](https://github.com/makashov73/tinyWebServer/blob/master/build/tinyWebServer_windows.exe)
 [Linux](https://github.com/makashov73/tinyWebServer/blob/master/build/tinyWebServer_linux_linux)
 
-For working this server properly first of all you need to install package [filetype](https://github.com/h2non/filetype)
+For compile binary file first of all you need to install package [filetype](https://github.com/h2non/filetype)
